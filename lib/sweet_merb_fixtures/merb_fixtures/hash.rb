@@ -4,6 +4,19 @@ module Merb::Fixtures
   class Hash
     attr_accessor :records, :names
 
+    chainable do
+
+      def code_to_create_record(model, hash)
+        model.create(hash)
+      end
+
+      def code_to_create_child_record(parent_record, relation_name, hash)
+        parent_record.send(relation_name).create(hash)       
+      end
+
+    end
+
+
     def initialize(hashs)
       @hashs = hashs.is_a?(::Hash) ? [hashs] : hashs
       @records = ::Hash.new
@@ -77,7 +90,7 @@ module Merb::Fixtures
             grand_children = separate_children(child_model, hash) 
             child_record = create_record(child_model, hash) do |child_model, givenhash|
               # TODO: Don't try to create if parent_record has failed to save.
-              parent_record.send(child_type).create(givenhash)
+              code_to_create_child_record(parent_record, child_type, givenhash)
             end
 
             # Now, we have to let the child create their parent's grandchildren.
@@ -102,7 +115,7 @@ module Merb::Fixtures
 
           handle_hashs(remote.parent_model, child_value) do |remote_parent_record|
             create_record(child, { parent_key => parent_record.id }) do |child, givenhash|
-              remote_parent_record.send(near.name).create(givenhash)
+              code_to_create_child_record(remote_parent_record, near.name, givenhash)
             end
           end
         end
@@ -153,7 +166,7 @@ module Merb::Fixtures
       else
         @records[model] ||= []
         unless block_given?
-          record = model.create(hash)
+          record = code_to_create_record(model, hash)
         else
           record = yield model, hash
         end
