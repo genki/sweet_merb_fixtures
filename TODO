@@ -1,0 +1,5 @@
+TODO:
+Fix LICENSE with your name
+Fix Rakefile with your name and contact info
+Add your code to lib/sweet_merb_fixtures.rb
+Add your Merb rake tasks to lib/sweet_merb_fixtures/merbtasks.rb

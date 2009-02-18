@@ -1,0 +1,15 @@
+parents:
+  -
+    id: one
+    name: Bob
+    children:
+      "{type: girl}":
+        -
+          name: Mary
+        -
+          name: Lisa
+
+          grand_children:
+            
+            - 
+              name: Rose

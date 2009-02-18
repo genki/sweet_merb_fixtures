@@ -1,0 +1,12 @@
+parents:
+  -
+    id: one
+    name: Bob
+    
+    tags:
+      -
+        name: Blue
+      -
+        name: Red
+      -
+        name: White
