@@ -6,10 +6,10 @@ require 'merb-core/tasks/merb'
 
 GEM_NAME = "sweet_merb_fixtures"
 GEM_VERSION = "0.0.1"
-AUTHOR = "Your Name"
-EMAIL = "Your Email"
-HOMEPAGE = "http://merbivore.com/"
-SUMMARY = "Merb plugin that provides ..."
+AUTHOR = "Yukiko Kawamoto"
+EMAIL = "yu0420@gmail.com"
+HOMEPAGE = "github.com/yukiko"
+SUMMARY = "Merb plugin that provides the system to create records from YAML files."
 
 spec = Gem::Specification.new do |s|
   s.rubyforge_project = 'merb'
@@ -24,6 +24,7 @@ spec = Gem::Specification.new do |s|
   s.email = EMAIL
   s.homepage = HOMEPAGE
   s.add_dependency('merb', '>= 1.0.9')
+  s.add_dependency('dm-core', '>= 0.9.10')
   s.require_path = 'lib'
   s.files = %w(LICENSE README Rakefile TODO) + Dir.glob("{lib,spec}/**/*")
   

@@ -1,4 +1,63 @@
 sweet_merb_fixtures
 ===================
 
-A plugin for the Merb framework that provides ...
+A plugin for the Merb framework and DataMapper that provides the system to create records from YAML files.
+
+The Location of YAML files:
+  You can specify the directory for fixture YAML files by
+    
+    Merb::Plugins.[:sweet_merb_fixtures][:fixture_dir] = path / to / your_dir
+ 
+  If you don't specify any direcotry,  Merb.dir_for(:lib) / fixtures  is used.
+
+How to use:
+  Send this method in merb irb console,
+
+    merb -i
+    >> Merb::Fixtures.load_fixture("filename without extension", "file2", "file3")
+
+  or when you use rspec write above code in before block.
+
+
+Features:
+  1. you can write parameters of multiple storage in a file.
+    cats:
+      -
+        name: Tama
+      -
+        name: Tora
+    dogs:
+      -
+        name: Pochi
+      -
+        name: Hachi
+
+  2. you can specify the one to many associations and :through associations.
+    parents:
+      -
+        name: Tama
+        children:
+          -
+            name: Tora
+      
+  3. you can specify the name of records.
+
+    cats:
+      -
+        # pass string as id
+        id: white 
+        name: Tama
+
+  4. you can specify the common value of records.
+
+    cats:
+      # The way could be better.
+      :"{color: white}"
+        -
+          name: Tama
+        -
+          name: Shiro
+
+
+  More details are in spec doc.
+
