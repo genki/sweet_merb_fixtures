@@ -6,7 +6,7 @@ A plugin for the Merb framework and DataMapper that provides the system to creat
 The Location of YAML files:
   You can specify the directory for fixture YAML files by
     
-    Merb::Plugins.[:sweet_merb_fixtures][:fixture_dir] = path / to / your_dir
+    Merb::Plugins.config[:sweet_merb_fixtures][:fixture_dir] = path / to / your_dir
  
   If you don't specify any direcotry,  Merb.dir_for(:lib) / fixtures  is used.
 
@@ -17,6 +17,14 @@ How to use:
     >> Merb::Fixtures.load_fixture("filename without extension", "file2", "file3")
 
   or when you use rspec write above code in before block.
+
+
+Another Settings:
+  By default DataMapper.auto_migrate! is called before storing reocrds. if you don't want this
+
+    Merb::Plugins.config[:sweet_merb_fixtures][:auto_migrate] = false
+
+  Or you can override Merb::Fixture.prepare_database.
 
 
 Features:

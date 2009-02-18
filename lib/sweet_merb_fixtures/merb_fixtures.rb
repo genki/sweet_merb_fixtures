@@ -62,7 +62,9 @@ module Merb::Fixtures
 
   # Override this method if you need.
   def self.prepare_database
-    DataMapper.auto_migrate!
+    if Merb::Plugins.config[:sweet_merb_fixtures][:auto_migrate]
+      DataMapper.auto_migrate!
+    end
   end
 
 end
