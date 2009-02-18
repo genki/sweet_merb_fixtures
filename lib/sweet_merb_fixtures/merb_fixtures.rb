@@ -45,7 +45,7 @@ module Merb::Fixtures
   def self.load_fixture_file(specify)
     file = Merb.dir_for(:fixtures) / specify + ".yml" 
     if File.exists? file
-      YAML.load_file file 
+      Erubis.load_yaml_file file 
     else
       raise "Couldn't find the fixture file: #{file}"
     end

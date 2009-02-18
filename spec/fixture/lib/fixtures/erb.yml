@@ -1,0 +1,6 @@
+<% names = %w[a b c] %>
+parents:
+<% names.each do |name| %>
+  -
+    name: <%= name  %>
+<% end -%>

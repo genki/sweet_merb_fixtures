@@ -138,4 +138,13 @@ describe "sweet_merb_fixtures" do
     Tag.count.should == 3
   end
 
+
+  it "should evaluate ERB in YAML file" do
+    Merb::Fixtures.load_fixture("erb")
+    Parent.count.should == 3
+    Parent.get(1).name.should == "a"
+    Parent.get(2).name.should == "b"
+    Parent.get(3).name.should == "c"
+  end
+
 end

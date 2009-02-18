@@ -57,6 +57,11 @@ Features:
           name: Tama
         -
           name: Shiro
+ 
+  5. you can write erb code in yaml file
+    cats:
+      -
+        name: <%= "a" * 5 %>
 
 
   More details are in spec doc.
