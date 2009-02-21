@@ -28,4 +28,5 @@ Spec::Runner.configure do |config|
   config.include(Merb::Test::RouteHelper)
   config.include(Merb::Test::ControllerHelper)
   config.before(:all){DataMapper.auto_migrate!}
+  config.include(Merb::Fixtures)
 end

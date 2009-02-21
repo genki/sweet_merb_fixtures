@@ -147,4 +147,18 @@ describe "sweet_merb_fixtures" do
     Parent.get(3).name.should == "c"
   end
 
+  it "tries to create without the value of association key if its parent record wasn't saved" do
+    a = Parent.new
+    a.save.should == false
+    Merb::Fixtures.load_fixture("parent_failed").should be_a(String) #failure messages
+    Parent.count.should be_zero
+    Child.get(1).parent_id.should be_nil
+  end
+
+  it "should provide fixtures method if module is properly included" do
+    load_fixture("parent_failed")
+    fixtures[:pochi].name.should == "Pochi"
+    fixtures[:tama].name.should == "Tama"
+  end
+
 end

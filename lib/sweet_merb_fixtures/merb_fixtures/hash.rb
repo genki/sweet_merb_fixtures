@@ -11,7 +11,15 @@ module Merb::Fixtures
       end
 
       def code_to_create_child_record(parent_record, relation_name, hash)
-        parent_record.send(relation_name).create(hash)       
+        if parent_record.errors.empty?
+          parent_record.send(relation_name).create(hash)       
+        else
+          parent_record.model.relationships[relation_name].child_model.create(hash)
+        end
+      end
+
+      def code_to_report_errors(errors)
+        errors.map{|record| "A #{record.model.name.snake_case}:#{record.errors.full_messages.join(",")}" }.join(", ")
       end
 
     end
@@ -177,12 +185,11 @@ module Merb::Fixtures
     end
 
     def all_valid?
-      # TODO I'm not sure whether this code work with dm-validations
       errors = []
       @records.values.flatten.each do |record| 
-        errors << record.errors unless record.errors.empty? 
+        errors << record unless record.errors.empty? 
       end
-      errors.empty? ? true : errors.inspect
+      errors.empty? ? true : code_to_report_errors(errors)
     end
 
     def separate_children(model, hash)

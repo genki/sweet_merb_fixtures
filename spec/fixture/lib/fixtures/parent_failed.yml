@@ -1,0 +1,11 @@
+parents:
+  -
+    children:
+      -
+        id: tama
+        name: Tama
+      -
+        id: pochi
+        type: boy
+        name: Pochi
+
