@@ -1,4 +1,3 @@
-Merb.logger.info "load merb_fixtures." #<TODO delete this line later
 Merb.push_path :fixtures, (
   Merb::Plugins.config[:sweet_merb_fixures][:fixtures_dir] || (Merb.dir_for(:lib) / :fixtures )), nil
 module Merb::Fixtures; end
