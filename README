@@ -16,8 +16,14 @@ How to use:
     merb -i
     >> Merb::Fixtures.load_fixture("filename without extension", "file2", "file3")
 
-  or when you use rspec write above code in before block.
+  When using rspec, write above code in before block, or
+  if you include Merb::Fixture module as helper methods,
 
+    Spec::Runner.configure do |config|
+      config.include(Merb::Fixtures)
+    end
+
+  load_fixtures("key") and fixtures[:name] methods will be available.
 
 Another Settings:
   By default DataMapper.auto_migrate! is called before storing reocrds. if you don't want this
@@ -26,6 +32,12 @@ Another Settings:
 
   Or you can override Merb::Fixture.prepare_database.
 
+  These method are chainable:
+
+    Merb::Fixtures::Hash#code_to_create_record
+    Merb::Fixtures::Hash#code_to_create_child_record
+    Merb::Fixtures::Hash#code_to_report
+    Merb::Fixtures::Hash#code_to_report_errors
 
 Features:
   1. you can write parameters of multiple storage in a file.
