@@ -22,6 +22,15 @@ module Merb::Fixtures
         errors.map{|record| "A #{record.model.name.snake_case}:#{record.errors.full_messages.join(",")}" }.join(", ")
       end
 
+      def code_to_report
+        puts
+        puts "Created Records"
+        puts "==============="
+        records.each do |model, records|
+          puts "--> #{records.size} #{model.name}."
+        end
+      end
+
     end
 
 

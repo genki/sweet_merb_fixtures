@@ -26,20 +26,10 @@ module Merb::Fixtures
 
     result = hash.store_to_database
     if result == true and options[:report]
-      report_successfully_created_records(hash)
+      hash.code_to_report
     end
     result
   end
-
-  def report_successfully_created_records(hash)
-    puts
-    puts "Created Records"
-    puts "==============="
-    hash.records.each do |model, records|
-      puts "--> #{records.size} #{model.name}."
-    end
-  end
-
 
   def self.load_fixture_file(specify)
     file = Merb.dir_for(:fixtures) / specify + ".yml" 
