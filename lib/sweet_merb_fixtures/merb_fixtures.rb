@@ -18,10 +18,6 @@ module Merb::Fixtures
     hash = Merb::Fixtures::Hash.new(
       specifies.map{ |s| Merb::Fixtures.load_fixture_file(s)} )
 
-    # TODO the code below is for test environment, 
-    # especially used by the way for TestHelper to include Merb::Fixtures module,
-    # enable fixtures[:name] method to get a specified named record,
-    # but it has not tested yet.
     self.fixtures = hash if self.respond_to? :fixtures= 
 
     result = hash.store_to_database
