@@ -44,9 +44,16 @@ task :uninstall do
   Merb::RakeHelper.uninstall(GEM_NAME, :version => GEM_VERSION)
 end
 
+desc "Run specs"
+task :spec do
+  sh "spec --color spec"
+end
+
 desc "Create a gemspec file"
 task :gemspec do
   File.open("#{GEM_NAME}.gemspec", "w") do |file|
     file.puts spec.to_ruby
   end
 end
+
+task :default => :spec
