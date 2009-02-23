@@ -161,4 +161,13 @@ describe "sweet_merb_fixtures" do
     fixtures[:tama].name.should == "Tama"
   end
 
+  it "should load fixtures with performing filters as default" do
+    load_fixture("chain")
+    fixtures[:one].should be_performed_before_create
+  end
+
+  it "should load fixtures without performing filters if :skip_filters specified in option" do
+    load_fixture("chain", :skip_filters => true)
+    fixtures[:one].should_not be_performed_before_create
+  end
 end

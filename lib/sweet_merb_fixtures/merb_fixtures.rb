@@ -17,6 +17,11 @@ module Merb::Fixtures
 
     hash = Merb::Fixtures::Hash.new(
       specifies.map{ |s| Merb::Fixtures.load_fixture_file(s)} )
+    
+    if options[:skip_filters]
+      require 'sweet_merb_fixtures/merb_fixtures/skip_filters'
+      hash.extend SkipFilters
+    end
 
     self.fixtures = hash if self.respond_to? :fixtures= 
 
