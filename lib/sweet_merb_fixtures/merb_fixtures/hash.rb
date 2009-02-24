@@ -45,7 +45,7 @@ module Merb::Fixtures
     end
 
     # Make simple @records[Model] = [records] from hash loaded from fixture yaml file,
-    # also Merb::Fixtures::Hash#[] is available to access named records. <TODO, actually
+    # also Merb::Fixtures::Hash#[] is available to access named records.
     def store_to_database
       @hashs.each do |h|
         @hash = h
@@ -89,9 +89,18 @@ module Merb::Fixtures
     # Then, let the parent create their children
     def let_parent_create_their_children(parent_record, children)
       children.each do |child_storage, child_value|
-        child_type  = child_storage.to_sym
-        relationship = parent_record.model.relationships[child_type]
+        relationship = parent_record.model.relationships[child_storage.to_sym]
         if relationship.class == DataMapper::Associations::Relationship
+          handle_one_to_many_relationship(relationship, parent_record, child_value)
+
+        elsif relationship.class == DataMapper::Associations::RelationshipChain
+          handle_many_to_many_relationship(relationship, parent_record, child_value)
+
+        end
+      end
+    end
+
+    def handle_one_to_many_relationship(relationship, parent_record, child_value)
     # 
     # When creating a parent record, we use
     #   Parent.create(params)
@@ -100,41 +109,40 @@ module Merb::Fixtures
     #
     # It's nessecary to manage the difference.
     #
-          child_model = parent_record.model.relationships[child_type].child_model
-          child_hashs = handle_default_value(child_value)
-          child_hashs.each do |hash|
+      child_model = parent_record.model.relationships[relationship.name].child_model
+      child_hashs = handle_default_value(child_value)
 
-            grand_children = separate_children(child_model, hash) 
-            child_record = create_record(child_model, hash) do |child_model, givenhash|
-              # TODO: Don't try to create if parent_record has failed to save.
-              code_to_create_child_record(parent_record, child_type, givenhash)
-            end
+      child_hashs.each do |hash|
 
-            # Now, we have to let the child create their parent's grandchildren.
-            unless grand_children.empty?
-              let_parent_create_their_children child_record, grand_children
-            end
-          end
+        grand_children = separate_children(child_model, hash) 
+        child_record = create_record(child_model, hash) do |child_model, givenhash|
+          code_to_create_child_record(parent_record, relationship.name, givenhash)
+        end
 
-        elsif relationship.class == DataMapper::Associations::RelationshipChain
+        # Now, we have to let the child create their parent's grandchildren.
+        unless grand_children.empty?
+          let_parent_create_their_children child_record, grand_children
+        end
 
-     # 
-     # The situation is different from above case.
-     #
-     # First create records of remote_relationship's parent_model,
-     # then create records of near_relationship's child_model (which is also remote_relationship's child_model) 
-     # because it seems the function to create records through relationship chain haven't been provided or stable.
-     #    
-          remote = relationship.send(:remote_relationship)
-          near = relationship.send(:near_relationship)
-          child = near.child_model # same as remote.child_model
-          parent_key = "#{parent_record.model.name.snake_case}_id".to_sym
+      end
+    end
 
-          handle_hashs(remote.parent_model, child_value) do |remote_parent_record|
-            create_record(child, { parent_key => parent_record.id }) do |child, givenhash|
-              code_to_create_child_record(remote_parent_record, near.name, givenhash)
-            end
-          end
+    def handle_many_to_many_relationship(relationship, values)
+    # 
+    # The situation is different from above case.
+    #
+    # First create records of remote_relationship's parent_model,
+    # then create records of near_relationship's child_model (which is also remote_relationship's child_model) 
+    # because it seems the function to create records through relationship chain haven't been provided or stable.
+    #    
+      remote = relationship.send(:remote_relationship)
+      near = relationship.send(:near_relationship)
+      child = near.child_model # same as remote.child_model
+      parent_key = "#{parent_record.model.name.snake_case}_id".to_sym
+
+      handle_hashs(remote.parent_model, child_value) do |remote_parent_record|
+        create_record(child, { parent_key => parent_record.id }) do |child, givenhash|
+          code_to_create_child_record(remote_parent_record, near.name, givenhash)
         end
       end
     end
