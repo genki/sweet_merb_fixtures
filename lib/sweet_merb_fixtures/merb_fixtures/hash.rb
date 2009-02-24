@@ -172,7 +172,7 @@ module Merb::Fixtures
     
     def create_record(model, hash)
       name = delete_named_key(hash)
-      if record = @names[name]
+      if hash.empty? && record = @names[name]
 
         # TODO> What should I check?
         # * I should raise error when either
