@@ -1,0 +1,17 @@
+users:
+  -
+    id: yukiko
+    :login: yukiko
+    owning_groups:
+      -
+        id: merbist
+        :name: Merbist
+        assignments:
+          -
+            id: yukiko_is_merbist
+    groups:
+      -
+        id: mebist
+        assignments:
+          -
+            id: yukiko_is_merbist
