@@ -127,7 +127,7 @@ module Merb::Fixtures
       end
     end
 
-    def handle_many_to_many_relationship(relationship, values)
+    def handle_many_to_many_relationship(relationship, parent_record, child_value)
     # 
     # The situation is different from above case.
     #
