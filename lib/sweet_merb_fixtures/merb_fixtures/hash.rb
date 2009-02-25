@@ -88,8 +88,8 @@ module Merb::Fixtures
 
     # Then, let the parent create their children
     def let_parent_create_their_children(parent_record, children)
-      children.each do |child_storage, child_value|
-        relationship = parent_record.model.relationships[child_storage.to_sym]
+      children.each do |child_relation_name, child_value|
+        relationship = parent_record.model.relationships[child_relation_name.to_sym]
         if relationship.class == DataMapper::Associations::Relationship
           handle_one_to_many_relationship(relationship, parent_record, child_value)
 
