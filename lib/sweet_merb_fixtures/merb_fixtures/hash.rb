@@ -90,12 +90,13 @@ module Merb::Fixtures
     def let_parent_create_their_children(parent_record, children)
       children.each do |child_relation_name, child_value|
         relationship = parent_record.model.relationships[child_relation_name.to_sym]
-        if relationship.class == DataMapper::Associations::Relationship
-          handle_one_to_many_relationship(relationship, parent_record, child_value)
 
-        elsif relationship.class == DataMapper::Associations::RelationshipChain
-          handle_many_to_many_relationship(relationship, parent_record, child_value)
+        case relationship
+          when DataMapper::Associations::RelationshipChain
+            handle_many_to_many_relationship(relationship, parent_record, child_value)
 
+          when DataMapper::Associations::Relationship
+            handle_one_to_many_relationship(relationship, parent_record, child_value)
         end
       end
     end
