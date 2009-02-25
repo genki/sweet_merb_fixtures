@@ -2,12 +2,21 @@ require File.dirname(__FILE__) + '/spec_helper'
 
 describe "users fixtures" do
   before :all do
+    DataMapper.auto_migrate!
     load_fixture("users")
   end
 
   it "should load fixtures" do
-    User.count.should >= 1
-    Group.count.should >= 1
+    User.count.should == 1
+    Group.count.should == 1
+    Assignment.count.should == 1
+  end
+
+  it "should prepare named fixtures" do
+    fixtures[:yukiko].model == User
+    fixtures[:yukiko].login == "Yukiko"
+    fixtures[:merbist].model == Group
+    fixtures[:merbist].name == "Merbist"
   end
 
   describe "yukiko" do

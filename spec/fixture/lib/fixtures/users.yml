@@ -1,17 +1,20 @@
 users:
   -
     id: yukiko
-    :login: yukiko
+    login: yukiko
     owning_groups:
       -
         id: merbist
-        :name: Merbist
-        assignments:
-          -
-            id: yukiko_is_merbist
-    groups:
+        name: Merbist
+
+  # This array is in order to ensure that 
+  # Handling the parameters below should be executed after the above record is saved.
+  -
+    id: yukiko
+    joining_groups:
       -
-        id: mebist
+        id: merbist
+---
         assignments:
           -
             id: yukiko_is_merbist

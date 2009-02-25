@@ -4,5 +4,10 @@ class Assignment
   property :id, Serial
 
   belongs_to :user
-  belongs_to :group
+
+  # This line is not nessesary for this test but enables both assignment.group and assignment.joining_group.
+  belongs_to :group 
+
+  # for :through association
+  belongs_to :joining_group, :class_name => Group  
 end
