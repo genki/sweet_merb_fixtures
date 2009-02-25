@@ -6,6 +6,14 @@ users:
       -
         id: merbist
         name: Merbist
+  -
+    id: taro
+    login: taro
+
+    owning_groups:
+      -
+        id: rubyist
+        name: Rubyist
 
   # This array is in order to ensure that 
   # Handling the parameters below should be executed after the above record is saved.
@@ -14,7 +22,11 @@ users:
     joining_groups:
       -
         id: merbist
----
+
+        # Note that this is hash not array of hashs in order to specify this many-to-many association.
         assignments:
-          -
-            id: yukiko_is_merbist
+          id: yukiko_is_merbist
+          role: owner
+
+      -
+        id: rubyist

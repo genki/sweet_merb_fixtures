@@ -2,6 +2,7 @@ class Assignment
   include DataMapper::Resource
 
   property :id, Serial
+  property :role, String
 
   belongs_to :user
 

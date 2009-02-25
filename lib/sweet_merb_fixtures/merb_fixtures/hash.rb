@@ -90,7 +90,6 @@ module Merb::Fixtures
     def let_parent_create_their_children(parent_record, children)
       children.each do |child_relation_name, child_value|
         relationship = parent_record.model.relationships[child_relation_name.to_sym]
-
         case relationship
           when DataMapper::Associations::RelationshipChain
             handle_many_to_many_relationship(relationship, parent_record, child_value)
@@ -128,7 +127,7 @@ module Merb::Fixtures
       end
     end
 
-    def handle_many_to_many_relationship(relationship, parent_record, child_value)
+    def handle_many_to_many_relationship(relationship, parent_record, remote_parent_values)
     # 
     # The situation is different from above case.
     #
@@ -140,10 +139,17 @@ module Merb::Fixtures
       near = relationship.send(:near_relationship)
       child = near.child_model # same as remote.child_model
       parent_key = "#{parent_record.model.name.snake_case}_id".to_sym
+      remote_parent_values.each do |remote_parent_value|
+        near_child_value = remote_parent_value.delete(near.name.to_s)
+        handle_hashs(remote.parent_model, [remote_parent_value]) do |remote_parent_record|
 
-      handle_hashs(remote.parent_model, child_value) do |remote_parent_record|
-        create_record(child, { parent_key => parent_record.id }) do |child, givenhash|
-          code_to_create_child_record(remote_parent_record, near.name, givenhash)
+          hash_to_create_record = { parent_key => parent_record.id }
+          hash_to_create_record.merge!(near_child_value) if near_child_value
+
+          create_record(child, hash_to_create_record) do |child, givenhash|
+            code_to_create_child_record(remote_parent_record, near.name, givenhash)
+          end
+
         end
       end
     end
