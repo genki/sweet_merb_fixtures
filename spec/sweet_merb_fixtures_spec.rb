@@ -170,4 +170,14 @@ describe "sweet_merb_fixtures" do
     load_fixture("chain", :skip_filters => true)
     fixtures[:one].should_not be_performed_before_create
   end
+
+  it "should be able to pass both String and Symbol as filename to load_fixtures method." do
+    load_fixture("parent_failed")
+    fixtures[:pochi].name.should == "Pochi"
+    self.fixtures = nil
+    Merb::Fixtures.prepare_database :force => true
+    load_fixture(:parent_failed)
+    fixtures[:pochi].name.should == "Pochi"
+  end
+
 end
