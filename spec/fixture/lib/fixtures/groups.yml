@@ -1,0 +1,33 @@
+# TODO This file is not supported yet, 
+# because of the direction of association (one-to-many).
+groups:
+  # First, trying to create a user as a owner.
+  -
+    id: merbist
+    name: Merbist
+
+    owners:
+      -
+        id: yukiko
+        login: yukiko
+
+  # Then, adding the previously created user as a member.
+  -
+    id: merbist
+    members:
+      -
+        # This refers the named record if it has already been created.
+        id: yukiko 
+
+        assignments:
+          -
+            id: yukiko_is_merbist
+            role: owner
+      
+      -
+        id: taro
+
+        assignments:
+          -
+            id: taro_is_merbist
+            role: member
