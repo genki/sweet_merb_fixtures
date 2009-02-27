@@ -41,6 +41,11 @@ module Merb::Fixtures
     end
   end
 
+  def self.available_files
+    dir = Merb.dir_for(:fixtures)
+    Dir[dir / :** / "**.yml"].map { |path| path.match %r{^#{dir}/(.*)\.yml}; $1.to_sym }
+  end
+
   def self.load_fixture(*specifies)
     prepare_database
     k = Class.new

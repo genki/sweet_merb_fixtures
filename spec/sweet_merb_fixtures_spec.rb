@@ -180,4 +180,13 @@ describe "sweet_merb_fixtures" do
     fixtures[:pochi].name.should == "Pochi"
   end
 
+  it "should have Merb::Fixtures::available_files method to get a list of available fixture files" do
+    list = Merb::Fixtures.available_files
+    list.should include(:chain)
+    list.should include(:erb)
+    list.should include(:gc)
+    list.should include(:parent_failed)
+    list.should include(:users)
+  end
+
 end
