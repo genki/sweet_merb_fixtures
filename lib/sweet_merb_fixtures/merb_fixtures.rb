@@ -32,9 +32,10 @@ module Merb::Fixtures
     result
   end
 
-  def self.load_fixture_file(specify)
+  def self.load_fixture_file(specify, options={})
     file = Merb.dir_for(:fixtures) / specify + ".yml" 
     if File.exists? file
+      return IO::read file if options[:plain]
       Erubis.load_yaml_file file 
     else
       raise "Couldn't find the fixture file: #{file}"
@@ -44,6 +45,10 @@ module Merb::Fixtures
   def self.available_files
     dir = Merb.dir_for(:fixtures)
     Dir[dir / :** / "**.yml"].map { |path| path.match %r{^#{dir}/(.*)\.yml}; $1.to_sym }
+  end
+
+  def self.cat_file(specify)
+    print(load_fixture_file specify, :plain => true)
   end
 
   def self.load_fixture(*specifies)
