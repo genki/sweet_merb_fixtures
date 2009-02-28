@@ -15,6 +15,13 @@ How to use:
 
     merb -i
     >> Merb::Fixtures.load_fixture("filename without extension", "file2", "file3")
+  
+  Or
+
+    merb -i
+    >> MF.load_fixture(:file1, :file2)
+  
+  is also possible.
 
   When using rspec, write above code in before block, or
   if you include Merb::Fixture module as helper methods,
@@ -84,5 +91,5 @@ Features:
         name: <%= "a" * 5 %>
 
 
-  More details are in spec doc.
-
+  More details are in spec doc, actually possible ways are gradually increasing,
+  it's better to see YAML files under spec/fixture/lib/fixtures/*.yml.
