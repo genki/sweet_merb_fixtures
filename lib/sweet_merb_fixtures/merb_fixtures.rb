@@ -68,3 +68,8 @@ module Merb::Fixtures
   end
 
 end
+
+unless Merb::Plugins.config[:sweet_merb_fixtures][:disable_MF]
+  # a short alias 
+  MF = Merb::Fixtures
+end
