@@ -80,10 +80,24 @@ module Merb::Fixtures
     records
   end
 
-  def self.dump(specify="dumped", force=false)
-    if (! File.exists? fixture_file(specify)) or force
+  def self.records_for_dump_with_except_or_only(options={})
+    records = records_for_dump
+    case
+      when options[:except]
+        excepts = Array(options[:except]).map {|k| k.to_s}
+        records.except *excepts
+      when options[:only]
+        onlys = Array(options[:only]).map {|k| k.to_s}
+        records.only *onlys
+    else
+      records
+    end
+  end
+
+  def self.dump(specify="dumped", options={})
+    if (! File.exists? fixture_file(specify)) or options.delete(:force)
       io = open(fixture_file(specify), "w")
-      io.write records_for_dump.to_yaml
+      io.write records_for_dump_with_except_or_only(options).to_yaml
       io.close
     end
   end

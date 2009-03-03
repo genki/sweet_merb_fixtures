@@ -36,4 +36,28 @@ describe "create yaml file from records" do
 
     FileUtils.rm MF.fixture_file("test")
   end
+
+  it ":except and :only options is available" do
+    records = MF.records_for_dump_with_except_or_only :only => %w(assignments users)
+    records.keys.should include("assignments")
+    records.keys.should include("users")
+    records.keys.should_not include("groups")
+
+    records = MF.records_for_dump_with_except_or_only :except => :assignments
+    records.keys.should_not include("assginments")
+    records.keys.should include("users")
+    records.keys.should include("groups")
+
+    MF.should_receive(:records_for_dump_with_except_or_only).with(:only => :users)
+    MF.dump("only", :only => :users)
+    # MF.cat_file "only"
+    FileUtils.rm MF.fixture_file("only")
+    MF.rspec_verify
+
+    MF.should_receive(:records_for_dump_with_except_or_only).with(:except => :assignments)
+    MF.dump("except", :except => :assignments)
+    # MF.cat_file "except"
+    FileUtils.rm MF.fixture_file("except")
+    MF.rspec_verify
+  end
 end
