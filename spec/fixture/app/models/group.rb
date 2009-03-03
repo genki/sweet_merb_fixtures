@@ -7,5 +7,5 @@ class Group
   has n, :users, :through => has(1..n, :assignments).name
   belongs_to :user
 
-  validates_present :name, :user
+  validates_present :name, :user_id
 end

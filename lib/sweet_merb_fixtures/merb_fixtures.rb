@@ -33,13 +33,17 @@ module Merb::Fixtures
   end
 
   def self.load_fixture_file(specify, options={})
-    file = Merb.dir_for(:fixtures) / specify + ".yml" 
+    file = fixture_file(specify)
     if File.exists? file
       return IO::read file if options[:plain]
       Erubis.load_yaml_file file 
     else
       raise "Couldn't find the fixture file: #{file}"
     end
+  end
+
+  def self.fixture_file(specify)
+    Merb.dir_for(:fixtures) / specify + ".yml" 
   end
 
   def self.available_files
@@ -64,6 +68,23 @@ module Merb::Fixtures
   def self.prepare_database(options={})
     if Merb::Plugins.config[:sweet_merb_fixtures][:auto_migrate] or options[:force]
       DataMapper.auto_migrate!
+    end
+  end
+
+  def self.records_for_dump
+    records = {}
+    DataMapper::Resource.descendants.each do |model|
+      records_of_this_model = model.all
+      records.merge! model.storage_name => records_of_this_model.map{|r| r.attributes } unless records_of_this_model.empty?
+    end
+    records
+  end
+
+  def self.dump(specify="dumped", force=false)
+    if (! File.exists? fixture_file(specify)) or force
+      io = open(fixture_file(specify), "w")
+      io.write records_for_dump.to_yaml
+      io.close
     end
   end
 
