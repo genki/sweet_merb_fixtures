@@ -10,5 +10,5 @@ class Assignment
   belongs_to :group 
 
   # for :through association
-  belongs_to :joining_group, :class_name => Group  
+  belongs_to :joining_group, :class_name => Group, :child_key => [:group_id]
 end
