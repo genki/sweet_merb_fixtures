@@ -189,4 +189,11 @@ describe "sweet_merb_fixtures" do
     list.should include(:users)
   end
 
+  it "should display infomation about available storages when given storage name was wrong" do
+    Merb::Fixtures::Hash.available_storages.should include("users") 
+    proc do 
+      load_fixture("not_available_storage")
+    end.should raise_error(RuntimeError, /AvailableStorages/)
+  end
+
 end

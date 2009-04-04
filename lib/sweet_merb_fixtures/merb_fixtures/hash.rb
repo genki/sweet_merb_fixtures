@@ -64,7 +64,7 @@ module Merb::Fixtures
       if key.is_a? DataMapper::Model
         model = key
       else
-        raise "expected #{key} was a storage name but wasn't" unless model = storage_to_model( key )
+        raise "expected #{key} was a storage name but wasn't.\nAvailableStorages: #{self.class.available_storages.inspect}" unless model = storage_to_model( key )
       end
       hashs = handle_default_value(value)
       hashs.each do |hash|
@@ -235,7 +235,13 @@ module Merb::Fixtures
     end
 
     def storage_to_model(target)
-      DataMapper::Resource.descendants.inject(nil) { |result, m| result = m if m.storage_name == target; result }
+      DataMapper::Resource.descendants.inject(nil) do |result, m| 
+        m.storage_name == target ? m : result
+      end
+    end
+
+    def self.available_storages 
+      @@available_storages ||= DataMapper::Resource.descendants.map {|m| m.storage_name }
     end
 
 
