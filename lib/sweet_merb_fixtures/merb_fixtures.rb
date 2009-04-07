@@ -117,7 +117,7 @@ if Merb.environment == "test" and Merb.test_framework == :rspec
     config.before(:all) do
 
       # make sure that users table has no records first.
-      User.auto_migrate!
+      DataMapper.auto_migrate!
 
       # load fixtures when :given_fixture option is given
       options = self.class.options
