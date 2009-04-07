@@ -3,7 +3,6 @@ require 'rubygems'
 require 'merb-core'
 require 'merb-core/plugins'
 require "spec" # Satisfies Autotest and anyone else not using the Rake tasks
-require "sweet_merb_fixtures"
 
 dependency "dm-core"
 dependency "dm-aggregates"
@@ -12,6 +11,8 @@ dependency "dm-validations"
 use_orm :datamapper
 use_test :rspec
 use_template_engine :erb
+
+require "sweet_merb_fixtures"
 
 Merb.disable(:initfile)
 Merb.start_environment(
@@ -23,7 +24,3 @@ Merb.start_environment(
 )
 DataMapper.setup(:default, "sqlite3::memory:")
 
-Spec::Runner.configure do |config|
-  config.before(:all){DataMapper.auto_migrate!}
-  config.include(Merb::Fixtures)
-end

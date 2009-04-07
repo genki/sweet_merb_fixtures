@@ -104,7 +104,28 @@ module Merb::Fixtures
 
 end
 
+# A short alias 
 unless Merb::Plugins.config[:sweet_merb_fixtures][:disable_MF]
-  # a short alias 
   MF = Merb::Fixtures
+end
+
+# Set up rspec
+if Merb.environment == "test" and Merb.test_framework == :rspec
+
+  Spec::Runner.configure do |config|
+    config.include(Merb::Fixtures)
+    config.before(:all) do
+
+      # make sure that users table has no records first.
+      User.auto_migrate!
+
+      # load fixtures when :given_fixture option is given
+      options = self.class.options
+      if given_fixture_name = (options[:given_fixture] or options[:fixture])
+        load_fixture(*Array(given_fixture_name))
+      end
+
+    end
+  end
+
 end

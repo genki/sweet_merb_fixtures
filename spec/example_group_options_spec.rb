@@ -2,19 +2,6 @@ require File.dirname(__FILE__) + '/spec_helper'
 
 describe "ExampleGroup" do
   
-  before(:all) do
-
-    # make sure that users table has no records first.
-    User.auto_migrate!
-
-    # load fixtures when :given_fixture option is given
-    options = self.class.options
-    if given_fixture_name = (options[:given_fixture] or options[:fixture])
-      load_fixture(*Array(given_fixture_name))
-    end
-
-  end
-
   describe "when neigther :given_fixture or :fixture option was specified" do
     it "should not load anything" do
       User.count.should == 0
