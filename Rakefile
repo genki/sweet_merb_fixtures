@@ -5,7 +5,7 @@ require 'merb-core'
 require 'merb-core/tasks/merb'
 
 GEM_NAME = "sweet_merb_fixtures"
-GEM_VERSION = "0.0.4"
+GEM_VERSION = "0.0.5"
 AUTHOR = "Yukiko Kawamoto"
 EMAIL = "yu0420@gmail.com"
 HOMEPAGE = "github.com/yukiko"
