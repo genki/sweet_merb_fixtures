@@ -3,6 +3,12 @@ require File.dirname(__FILE__) + '/spec_helper'
 describe "ExampleGroup" do
   
   describe "when neigther :given_fixture or :fixture option was specified" do
+    before(:all) do
+      User.auto_migrate!
+    end
+
+    # TODO: How can I write spec of this behavior with same preconditions as
+    # other examples?
     it "should not load anything" do
       User.count.should == 0
     end
