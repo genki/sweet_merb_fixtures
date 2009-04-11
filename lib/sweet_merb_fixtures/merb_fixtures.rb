@@ -114,7 +114,7 @@ if Merb.environment == "test" and Merb.test_framework == :rspec
 
   Spec::Runner.configure do |config|
     config.include(Merb::Fixtures)
-    config.before(:all) do
+    config.append_before(:all) do
 
       # load fixtures when :given_fixture option is given
       options = self.class.options
